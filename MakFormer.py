@@ -6,6 +6,8 @@ import matplotlib.pyplot as plt
 
 class MaskFormer:
     def __init__(self,image_shape, device="cpu"):
+        if torch.cuda.is_available():
+            device = "cuda"
         self.image_shape = image_shape
         self.feature_extractor = MaskFormerFeatureExtractor.from_pretrained("facebook/maskformer-swin-base-ade")
         self.model = MaskFormerForInstanceSegmentation.from_pretrained("facebook/maskformer-swin-base-ade")

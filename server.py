@@ -28,9 +28,9 @@ class Server:
             print("loop")
             image = self.camera.get_image()
             heatmap = self.people_movement_heatmap.gen_heat(image)
-            #mask = self.maskformer.gen_heat(image)
+            mask = self.maskformer.gen_heat(image)
             heatmap_image = np.zeros_like(image)
-            heatmap_image[:,:,0] = heatmap
+            heatmap_image[:,:,0] = mask
             self.display(heatmap_image)
             current_time = time.time()
             time_past = current_time - last_frame
