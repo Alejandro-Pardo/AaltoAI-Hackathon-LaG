@@ -44,11 +44,11 @@ class MaskFormer:
         optical_flow = self.create_optical_flow(image)
         
         self.heat_image *= 0.8
-        self.heat_image[people_mask] += 17
+        self.heat_image[people_mask] += 13
         print(f"MAK: {self.heat_image.max()}")
         if optical_flow is not None:
             print(f"OPT: {optical_flow.max()}")
-            self.heat_image += optical_flow
+            self.heat_image += (optical_flow * 2.5)
         self.old_image = image
         self.old_mask = people_mask
         self.heat_image = np.clip(self.heat_image, a_min=None, a_max=255)
