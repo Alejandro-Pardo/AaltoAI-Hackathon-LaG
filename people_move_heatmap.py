@@ -15,7 +15,7 @@ import cv2
 
 class PeopleMovementHeatmap:
 
-    def __init__(self, image_shape) -> None:
+    def __init__(self, image_shape, scale = 1) -> None:
         self.image_shape = image_shape
         self.heatmap = np.zeros((image_shape[0], image_shape[1]))
         self.people = {}
@@ -27,7 +27,7 @@ class PeopleMovementHeatmap:
             self.device = "cpu"
 
         self.heat_per_person = 10
-        self.heat_radius = 100
+        self.heat_radius = 100 * scale
         self.heat_per_distance = 2
         self.heat_decay = 0.9
         self.model = DetrForObjectDetection.from_pretrained("facebook/detr-resnet-50").to(self.device)
@@ -49,17 +49,14 @@ class PeopleMovementHeatmap:
         for score, label, box in zip(
             results["scores"], results["labels"], results["boxes"]
         ):
-            box = [round(i, 2) for i in box.tolist()]
             if label.item() != 1:
                 continue
+            box = np.array([int(round(i)) for i in box.tolist()])
 
             humans.append(box)
 
-        human_middle = []
-        for box in humans:
-            x0, y0, x1, y1 = box
-            x0, y0, x1, y1 = int(x0), int(y0), int(x1), int(y1)
-            human_middle.append(((x0 + x1) / 2, (y0 + y1) / 2))
+        humans = np.array(humans)
+        human_middle = humans[:, :2] + (humans[:, 2:] - humans[:, :2]) / 2
 
         new_people = {}
         for human in human_middle:
