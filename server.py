@@ -31,7 +31,7 @@ class Server:
             mask = self.maskformer.gen_heat(image)
             heatmap_image = np.copy(image)
             heatmap_image[:,:,2] = np.zeros_like(mask)
-            #heatmap_image[:,:,2] += mask
+            heatmap_image[:,:,2] += mask
             heatmap_image[:,:,2] += heatmap
             self.display(heatmap_image)
             current_time = time.time()

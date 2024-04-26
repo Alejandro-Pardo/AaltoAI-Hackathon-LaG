@@ -28,7 +28,7 @@ class PeopleMovementHeatmap:
 
         self.heat_per_person = 10
         self.heat_radius = 100
-        self.heat_per_distance = 5
+        self.heat_per_distance = 2
         self.heat_decay = 0.9
         self.model = DetrForObjectDetection.from_pretrained("facebook/detr-resnet-50").to(self.device)
         self.image_processor = AutoImageProcessor.from_pretrained(
