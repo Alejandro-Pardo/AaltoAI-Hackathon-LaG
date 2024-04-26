@@ -36,9 +36,8 @@ class PeopleMovementHeatmap:
         )
 
     def track_people(self, image):
-        image = torch.tensor(image).to(self.device)
         inputs = self.image_processor(images=image, return_tensors="pt")
-
+        inputs.to(self.device)
         outputs = self.model(**inputs)
 
         target_sizes = torch.tensor([(image.shape[0], image.shape[1])])
