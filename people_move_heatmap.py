@@ -90,7 +90,7 @@ class PeopleMovementHeatmap:
         self.heatmap *= self.heat_decay
 
         self._gen_people_heat()
-        self._gen_movement_heat()
+        #self._gen_movement_heat()
         self.old_people = self.people
         return np.clip(self.heatmap, 0, 255).astype(np.uint8)
 
@@ -98,17 +98,17 @@ class PeopleMovementHeatmap:
         for person in self.people.values():
             x, y = person
             x, y = int(x), int(y)
-            for i in range(x - self.heat_radius, x + self.heat_radius):
-                for j in range(y - self.heat_radius, y + self.heat_radius):
-                    if (
-                        i < 0
-                        or j < 0
-                        or i >= self.image_shape[1]
-                        or j >= self.image_shape[0]
-                    ):
-                        continue
-                    distance = ((x - i) ** 2 + (y - j) ** 2) ** 0.5
-                    self.heatmap[j][i] += self.heat_per_person * (1 - distance / self.heat_radius)
+
+            start = max(0, x - self.heat_radius), max(0, y - self.heat_radius)
+            end = min(self.image_shape[1], x + self.heat_radius), min(self.image_shape[0], y + self.heat_radius)
+
+            x = np.arange(start, end)
+            y = np.arange(start, end)
+            xx, yy = np.meshgrid(x, y)
+
+            matrix = np.dstack([xx, yy])
+            distance = np.linalg.norm(matrix - person, axis=2)
+            self.heatmap[start[1]:end[1], start[0]:end[0]] += self.heat_per_person * (1 - distance / self.heat_radius)
 
     def _gen_movement_heat(self):
         for id, person in self.people.items():
