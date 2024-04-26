@@ -10,7 +10,7 @@ class MaskFormer:
             device = "cuda"
         self.image_shape = image_shape
         self.feature_extractor = MaskFormerFeatureExtractor.from_pretrained("facebook/maskformer-swin-base-ade")
-        self.model = MaskFormerForInstanceSegmentation.from_pretrained("facebook/maskformer-swin-base-ade")
+        self.model = MaskFormerForInstanceSegmentation.from_pretrained("facebook/maskformer-swin-base-ade").to(device)
         self.device = device
         self.heat_image = np.zeros((self.image_shape[0],self.image_shape[1]))
     def people_mask(self,image):
@@ -18,9 +18,8 @@ class MaskFormer:
         inputs.to(self.device)
         outputs = self.model(**inputs)
         seg_mask = self.feature_extractor.post_process_semantic_segmentation(outputs, target_sizes=[(image.shape[0],image.shape[1])])[0]
-
         seg_mask = seg_mask == 12 
-        return seg_mask
+        return seg_mask.to("cpu").numpy()
 
     def gen_heat(self,image):
         people_mask = self.people_mask(image)
