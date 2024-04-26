@@ -11,33 +11,33 @@ class Server:
 
     def __init__(self):
         self.camera = FileCamera("IMG_1081.MP4")
-        time.sleep(10)
         print("Getting Shape")
         shape = self.camera.get_shape()
         print(shape)
         self.people_movement_heatmap = PeopleMovementHeatmap(shape)
-        self.maskformer = MakFormer.MaskFormer(shape)
+        #self.maskformer = MakFormer.MaskFormer(shape)
         self.fps = 1
         self.writer = video_writer = cv2.VideoWriter(
-            "heatmap_output.avi", cv2.VideoWriter_fourcc(*"MJPG"), 1, (shape[1], shape[0])
+            "heatmap_output.avi", cv2.VideoWriter_fourcc(*"MJPG"), 5, (shape[1], shape[0])
         )
 
     def loop(self):
         last_frame = time.time()
 
-        for i in range(20):
+        for i in range(20*5):
             print("loop")
             image = self.camera.get_image()
             heatmap = self.people_movement_heatmap.gen_heat(image)
-            mask = self.maskformer.gen_heat(image)
-            heatmap_image = np.zeros_like(image)
-            heatmap_image[:,:,0] = mask
+            #mask = self.maskformer.gen_heat(image)
+            heatmap_image = np.copy(image)
+            heatmap_image[:,:,2] = np.zeros_like(heatmap)
+            heatmap_image[:,:,2] += heatmap
             self.display(heatmap_image)
             current_time = time.time()
             time_past = current_time - last_frame
             time_to_sleep = 1 / self.fps - time_past
-            if time_to_sleep > 0:
-                time.sleep(time_to_sleep)
+            #if time_to_sleep > 0:
+            #    time.sleep(time_to_sleep)
             last_frame = time.time()
         self.writer.release()
 
