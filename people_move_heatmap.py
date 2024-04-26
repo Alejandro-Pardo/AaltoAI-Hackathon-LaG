@@ -33,7 +33,7 @@ class PeopleMovementHeatmap:
         self.model = DetrForObjectDetection.from_pretrained("facebook/detr-resnet-50").to(self.device)
         self.image_processor = AutoImageProcessor.from_pretrained(
             "facebook/detr-resnet-50"
-        ).to(self.device)
+        )
 
     def track_people(self, image):
         image = torch.tensor(image).to(self.device)
