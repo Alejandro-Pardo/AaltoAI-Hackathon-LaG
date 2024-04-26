@@ -10,7 +10,7 @@ import MakFormer
 class Server:
 
     def __init__(self):
-        self.camera = FileCamera("IMG_1081.MP4", (1280, 720))
+        self.camera = FileCamera("IMG_1081.MP4", (1280 // 2, 720 // 2))
         print("Getting Shape")
         shape = self.camera.get_shape()
         print(shape)
