@@ -29,13 +29,14 @@ class Server:
             image = self.camera.get_image()
             heatmap = self.people_movement_heatmap.gen_heat(image)
             #mask = self.maskformer.gen_heat(image)
-            heatmap_image = np.copy(image)
+            heatmap_image = np.copy(image).astype(np.float64)
             heatmap_image[:,:] *= 0.1
             heatmap_image[:,:,2] = np.zeros_like(heatmap)
             #heatmap_image[:,:,2] += mask // 2
             heatmap_image[:,:,2] += heatmap // 2
             heatmap_image[:,:,2] = np.clip(heatmap_image[:,:,2], 0, 255).astype(np.uint8)
-            self.display(heatmap_image)
+
+            self.display(heatmap_image.astype(np.uint8))
             current_time = time.time()
             time_past = current_time - last_frame
             time_to_sleep = 1 / self.fps - time_past
