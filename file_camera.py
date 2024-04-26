@@ -17,8 +17,8 @@ class FileCamera():
         return (int(self.cap.get(cv2.CAP_PROP_FRAME_HEIGHT)), int(self.cap.get(cv2.CAP_PROP_FRAME_WIDTH)), 3)
 
     def get_image(self):
-        frame_number = self.current_second * self.fps
-        self.current_second += 0.2
+        frame_number = int(self.current_second * self.fps)
+        self.current_second += 1/3
         self.cap.set(cv2.CAP_PROP_POS_FRAMES, frame_number)
         ret, frame = self.cap.read()
         if ret:
