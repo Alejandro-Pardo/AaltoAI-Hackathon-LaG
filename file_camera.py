@@ -10,7 +10,7 @@ class FileCamera():
 
 
     def get_shape(self):
-        return (self.cap.get(cv2.CAP_PROP_FRAME_HEIGHT), self.cap.get(cv2.CAP_PROP_FRAME_WIDTH), 3)
+        return (int(self.cap.get(cv2.CAP_PROP_FRAME_HEIGHT)), int(self.cap.get(cv2.CAP_PROP_FRAME_WIDTH)), 3)
 
     def get_image(self):
         frame_number = self.current_second * self.fps
