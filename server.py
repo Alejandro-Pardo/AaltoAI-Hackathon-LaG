@@ -1,5 +1,6 @@
 from people_move_heatmap import PeopleMovementHeatmap
 from camera_class import Camera
+from file_camera import FileCamera
 import time
 import cv2
 import numpy as np
@@ -9,7 +10,7 @@ import MakFormer
 class Server:
 
     def __init__(self):
-        self.camera = Camera()
+        self.camera = FileCamera("IMG_1081.MP4")
         time.sleep(10)
         print("Getting Shape")
         shape = self.camera.get_shape()
