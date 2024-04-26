@@ -25,5 +25,5 @@ class MaskFormer:
         people_mask = self.people_mask(image)
         self.heat_image *= 0.5
         self.heat_image[people_mask] += 100
-        return self.heat_image
+        return self.heat_image.astype(np.uint8)
         
