@@ -92,6 +92,7 @@ class PeopleMovementHeatmap:
         self._gen_people_heat()
         self._gen_movement_heat()
         self.old_people = self.people
+        print(np.max(self.heatmap))
         return np.clip(self.heatmap, 0, 255).astype(np.uint8)
 
     def _gen_people_heat(self):
