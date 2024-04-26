@@ -102,8 +102,8 @@ class PeopleMovementHeatmap:
             start = max(0, x - self.heat_radius), max(0, y - self.heat_radius)
             end = min(self.image_shape[1], x + self.heat_radius), min(self.image_shape[0], y + self.heat_radius)
 
-            x = np.arange(start, end)
-            y = np.arange(start, end)
+            x = np.arange(start[0], end[0])
+            y = np.arange(start[1], end[1])
             xx, yy = np.meshgrid(x, y)
 
             matrix = np.dstack([xx, yy])
