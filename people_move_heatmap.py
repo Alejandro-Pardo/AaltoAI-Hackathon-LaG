@@ -21,16 +21,22 @@ class PeopleMovementHeatmap:
         self.people = {}
         self.old_people = {}
 
+        if torch.cuda.is_available():
+            self.device = "cuda"
+        else:
+            self.device = "cpu"
+
         self.heat_per_person = 10
         self.heat_radius = 100
         self.heat_per_distance = 0.8
         self.heat_decay = 0.9
-        self.model = DetrForObjectDetection.from_pretrained("facebook/detr-resnet-50")
+        self.model = DetrForObjectDetection.from_pretrained("facebook/detr-resnet-50").to(self.device)
         self.image_processor = AutoImageProcessor.from_pretrained(
             "facebook/detr-resnet-50"
-        )
+        ).to(self.device)
 
     def track_people(self, image):
+        image = torch.tensor(image).to(self.device)
         inputs = self.image_processor(images=image, return_tensors="pt")
 
         outputs = self.model(**inputs)
