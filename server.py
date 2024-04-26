@@ -14,7 +14,7 @@ class Server:
         print("Getting Shape")
         shape = self.camera.get_shape()
         print(shape)
-        self.people_movement_heatmap = PeopleMovementHeatmap(shape, 1 / 2)
+        self.people_movement_heatmap = PeopleMovementHeatmap(shape)
         self.maskformer = MakFormer.MaskFormer(shape)
         self.fps = 1
         self.writer = video_writer = cv2.VideoWriter(
