@@ -13,7 +13,7 @@ class FileCamera():
 
     def get_shape(self):
         if hasattr(self, 'predefined_size'):
-            return self.predefined_size
+            return (self.predefined_size[0], self.predefined_size[1], 3)
         return (int(self.cap.get(cv2.CAP_PROP_FRAME_HEIGHT)), int(self.cap.get(cv2.CAP_PROP_FRAME_WIDTH)), 3)
 
     def get_image(self):

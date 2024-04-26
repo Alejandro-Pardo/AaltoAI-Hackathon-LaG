@@ -10,12 +10,12 @@ import MakFormer
 class Server:
 
     def __init__(self):
-        self.camera = FileCamera("IMG_1081.MP4")
+        self.camera = FileCamera("IMG_1081.MP4", (720, 1280))
         print("Getting Shape")
         shape = self.camera.get_shape()
         print(shape)
         self.people_movement_heatmap = PeopleMovementHeatmap(shape)
-        #self.maskformer = MakFormer.MaskFormer(shape)
+        self.maskformer = MakFormer.MaskFormer(shape)
         self.fps = 1
         self.writer = video_writer = cv2.VideoWriter(
             "heatmap_output.avi", cv2.VideoWriter_fourcc(*"MJPG"), 5, (shape[1], shape[0])
@@ -27,11 +27,11 @@ class Server:
         for i in range(20*5):
             print("loop")
             image = self.camera.get_image()
-            heatmap = self.people_movement_heatmap.gen_heat(image)
-            #mask = self.maskformer.gen_heat(image)
+            #heatmap = self.people_movement_heatmap.gen_heat(image)
+            mask = self.maskformer.gen_heat(image)
             heatmap_image = np.copy(image)
-            heatmap_image[:,:,2] = np.zeros_like(heatmap)
-            heatmap_image[:,:,2] += heatmap
+            heatmap_image[:,:,2] = np.zeros_like(mask)
+            heatmap_image[:,:,2] += mask
             self.display(heatmap_image)
             current_time = time.time()
             time_past = current_time - last_frame
