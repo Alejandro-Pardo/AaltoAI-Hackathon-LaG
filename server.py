@@ -24,7 +24,7 @@ class Server:
     def loop(self):
         last_frame = time.time()
 
-        for i in range(20*3):
+        for i in range(30*3):
             print("loop")
             image = self.camera.get_image()
             heatmap = self.people_movement_heatmap.gen_heat(image)
