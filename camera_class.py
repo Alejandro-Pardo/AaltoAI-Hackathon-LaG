@@ -1,7 +1,7 @@
 import cv2
 
 class Camera:
-    def __init__(self, rtsp_url):
+    def __init__(self, rtsp_url="rtsp://lmango:lisan-ai-gaib@192.168.33.61:554/stream1"):
         self.rtsp_url = rtsp_url
         self.cap = cv2.VideoCapture(self.rtsp_url)
         if not self.cap.isOpened():
@@ -39,7 +39,3 @@ class Camera:
             self.cap.release()
             cv2.destroyAllWindows()
             print("Stream closed")
-
-rtsp_url = "rtsp://lmango:lisan-ai-gaib@192.168.33.61:554/stream1"
-camera = Camera(rtsp_url)
-camera.display_rtsp_stream()
