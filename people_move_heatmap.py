@@ -21,9 +21,9 @@ class PeopleMovementHeatmap:
         self.people = {}
         self.old_people = {}
 
-        self.heat_per_person = 30
+        self.heat_per_person = 10
         self.heat_radius = 100
-        self.heat_per_distance = 0.3
+        self.heat_per_distance = 0.8
         self.heat_decay = 0.9
         self.model = DetrForObjectDetection.from_pretrained("facebook/detr-resnet-50")
         self.image_processor = AutoImageProcessor.from_pretrained(
@@ -105,7 +105,8 @@ class PeopleMovementHeatmap:
                         or j >= self.image_shape[0]
                     ):
                         continue
-                    self.heatmap[j][i] += self.heat_per_person
+                    distance = ((x - i) ** 2 + (y - j) ** 2) ** 0.5
+                    self.heatmap[j][i] += self.heat_per_person * (1 - distance / self.heat_radius)
 
     def _gen_movement_heat(self):
         for id, person in self.people.items():
@@ -124,4 +125,5 @@ class PeopleMovementHeatmap:
                             or j >= self.image_shape[0]
                         ):
                             continue
-                        self.heatmap[j][i] += distance * self.heat_per_distance
+                        dist_from_center = ((x - i) ** 2 + (y - j) ** 2) ** 0.5
+                        self.heatmap[j][i] += distance * self.heat_per_distance * (1 - dist_from_center / self.heat_radius)

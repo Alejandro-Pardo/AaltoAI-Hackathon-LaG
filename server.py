@@ -27,11 +27,12 @@ class Server:
         for i in range(20*5):
             print("loop")
             image = self.camera.get_image()
-            #heatmap = self.people_movement_heatmap.gen_heat(image)
+            heatmap = self.people_movement_heatmap.gen_heat(image)
             mask = self.maskformer.gen_heat(image)
             heatmap_image = np.copy(image)
             heatmap_image[:,:,2] = np.zeros_like(mask)
-            heatmap_image[:,:,2] += mask
+            #heatmap_image[:,:,2] += mask
+            heatmap_image[:,:,2] += heatmap
             self.display(heatmap_image)
             current_time = time.time()
             time_past = current_time - last_frame
