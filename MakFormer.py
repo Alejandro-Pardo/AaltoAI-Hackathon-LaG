@@ -32,7 +32,6 @@ class MaskFormer:
             self.first = True
             return
         else:
-            # Convert both images to grayscale
             old_gray = cv2.cvtColor(self.old_image, cv2.COLOR_BGR2GRAY)
             frame_gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
             flow = cv2.calcOpticalFlowFarneback(old_gray, frame_gray, None, 0.5, 3, 15, 3, 5, 1.2, 0)
@@ -50,6 +49,6 @@ class MaskFormer:
             self.heat_image += optical_flow
         self.old_image = image
         self.old_mask = people_mask
-        cropped_array = np.clip(self.heat_image, a_min=None, a_max=255)
+        self.heat_image = np.clip(self.heat_image, a_min=None, a_max=255)
         return self.heat_image.astype(np.uint8)
         
