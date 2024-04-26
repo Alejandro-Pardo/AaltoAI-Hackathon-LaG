@@ -33,6 +33,7 @@ class Server:
             heatmap_image[:,:,2] = np.zeros_like(mask)
             heatmap_image[:,:,2] += mask
             heatmap_image[:,:,2] += heatmap
+            heatmap_image[:,:,2] = np.clip(heatmap_image[:,:,2], 0, 255).astype(np.uint8)
             self.display(heatmap_image)
             current_time = time.time()
             time_past = current_time - last_frame
