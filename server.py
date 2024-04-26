@@ -28,11 +28,11 @@ class Server:
             print("loop")
             image = self.camera.get_image()
             heatmap = self.people_movement_heatmap.gen_heat(image)
-            #mask = self.maskformer.gen_heat(image)
+            mask = self.maskformer.gen_heat(image)
             heatmap_image = np.copy(image).astype(np.float64)
             heatmap_image[:,:] *= 0.1
             heatmap_image[:,:,2] = np.zeros_like(heatmap)
-            #heatmap_image[:,:,2] += mask // 2
+            heatmap_image[:,:,2] += mask // 2
             heatmap_image[:,:,2] += heatmap // 2
             heatmap_image[:,:,2] = np.clip(heatmap_image[:,:,2], 0, 255).astype(np.uint8)
 

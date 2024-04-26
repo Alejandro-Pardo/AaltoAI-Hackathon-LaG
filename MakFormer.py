@@ -45,6 +45,7 @@ class MaskFormer:
         
         self.heat_image *= 0.9
         self.heat_image[people_mask] += 100
+        print(f"MAK: {self.heat_image.max()}")
         if optical_flow is not None:
             self.heat_image += optical_flow
         self.old_image = image

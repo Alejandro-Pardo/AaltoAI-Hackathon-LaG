@@ -26,7 +26,7 @@ class PeopleMovementHeatmap:
         else:
             self.device = "cpu"
 
-        self.heat_per_person = 5
+        self.heat_per_person = 1
         self.heat_radius = int(100 * scale)
         self.heat_per_distance = 1
         self.heat_decay = 0.9
