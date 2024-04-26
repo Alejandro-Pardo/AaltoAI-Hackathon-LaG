@@ -129,13 +129,15 @@ class PeopleMovementHeatmap:
         end = min(self.image_shape[1], x + self.heat_radius), min(
             self.image_shape[0], y + self.heat_radius
         )
+        inx = x
+        iny = y
 
         x = np.arange(start[0], end[0])
         y = np.arange(start[1], end[1])
         xx, yy = np.meshgrid(x, y)
 
         matrix = np.dstack([xx, yy])
-        distance = np.linalg.norm(matrix - (x, y), axis=2)
+        distance = np.linalg.norm(matrix - (inx, iny), axis=2)
         self.heatmap[start[1] : end[1], start[0] : end[0]] += heat * (
             1 - distance / self.heat_radius
         )
