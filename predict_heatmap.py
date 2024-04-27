@@ -5,17 +5,20 @@ from file_camera import FileCamera
 from Models import Encoder, Decoder
 from Camera_DataLoader import HeatMapDataset
 from torch.utils.data import DataLoader, random_split
+from torchvision.transforms import Resize
 
+# Create a resize transform
 
+resize_transform = Resize((256, 256))
 device ="cuda"
 
-encoder = Encoder()
+encoder = Encoder(kernel_size=10, stride=2, padding=2, image_shape=(256, 256))
 decoder = Decoder(encoder.out_shape)
 
 encoder = encoder.to(device)
 decoder = decoder.to(device)
 epochs = 30
-dataset = HeatMapDataset()
+dataset = HeatMapDataset(transform=resize_transform)
 
 # Define the size of the test set
 test_size = int(0.3 * len(dataset))  # 30% for testing
