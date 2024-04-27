@@ -16,6 +16,7 @@ class MaskFormer:
         self.heat_image = np.zeros((self.image_shape[0],self.image_shape[1]))
         self.old_image = None
         self.old_mask = None
+        self.optical_flow = None
         self.first = False
         self.p0 = None
         self.ang = None
@@ -43,6 +44,7 @@ class MaskFormer:
     def gen_heat(self,image):
         people_mask = self.people_mask(image)
         optical_flow = self.create_optical_flow(image)
+        self.optical_flow = optical_flow
         self.heat_image *= 0.8
         self.heat_image[people_mask] += 13
         if optical_flow is not None:
