@@ -40,6 +40,7 @@ class Server:
             props = self.prop_gen.gen_properties(heatmap, num_people)
             mean_heat, max_heat, total_heat, heat_per_person, x0, y0, x1, y1 = props
             if x0 < x1 and y0 < y1:
+                print("Drawing Rectangle")
                 cv2.rectangle(heatmap_image, (y0, x0), (y1, x1), (0, 255, 0), 2)
             self.display(heatmap_image.astype(np.uint8))
             current_time = time.time()

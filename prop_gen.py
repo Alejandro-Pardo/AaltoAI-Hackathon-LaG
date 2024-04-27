@@ -25,4 +25,9 @@ class PropGen():
                     x1 = max(x1, x)
                     y1 = max(y1, y)
         
+        x0 = x0 * 20
+        y0 = y0 * 20
+        x1 = x1 * 20
+        y1 = y1 * 20
+        
         return mean_heat, max_heat, total_heat, heat_per_person, x0, y0, x1, y1
