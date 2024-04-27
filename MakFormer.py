@@ -18,6 +18,7 @@ class MaskFormer:
         self.old_mask = None
         self.first = False
         self.p0 = None
+        self.ang = None
     def people_mask(self,image):
         inputs = self.feature_extractor(images=torch.tensor(image), return_tensors="pt")
         inputs.to(self.device)
@@ -37,12 +38,11 @@ class MaskFormer:
             flow = cv2.calcOpticalFlowFarneback(old_gray, frame_gray, None, 0.5, 3, 15, 3, 5, 1.2, 0)
             mag, ang = cv2.cartToPolar(flow[..., 0], flow[..., 1])
             mag = np.array(mag).reshape(self.image_shape[0], self.image_shape[1])
-
+            self.ang  = np.array(ang).reshape(self.image_shape[0], self.image_shape[1])
             return mag
     def gen_heat(self,image):
         people_mask = self.people_mask(image)
         optical_flow = self.create_optical_flow(image)
-        
         self.heat_image *= 0.8
         self.heat_image[people_mask] += 13
         if optical_flow is not None:
