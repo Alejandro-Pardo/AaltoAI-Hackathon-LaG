@@ -12,7 +12,7 @@ from torchvision.transforms import Resize
 resize_transform = Resize((256, 256))
 device ="cuda"
 
-encoder = Encoder(kernel_size=10, stride=2, padding=2, image_shape=(256, 256))
+encoder = Encoder(kernel_size=30, stride=2, padding=2, image_shape=(256, 256))
 decoder = Decoder(encoder.out_shape)
 
 encoder = encoder.to(device)
