@@ -49,16 +49,16 @@ class Server:
                     heatmap_image,
                     (y0 - 50, x0 - 50),
                     (y1 + 50, x1 + 50),
-                    (255, 0, 0),
+                    (0, 0, 255),
                     2,
                 )
             data.append(
                 {
-                    "mean_heat": mean_heat,
-                    "max_heat": max_heat,
-                    "total_heat": total_heat,
-                    "heat_per_person": heat_per_person,
-                    "num_people": num_people,
+                    "mean_heat": int(mean_heat),
+                    "max_heat": int(max_heat),
+                    "total_heat": int(total_heat),
+                    "heat_per_person": int(heat_per_person),
+                    "num_people": int(num_people),
                     "has_box": x0 < x1 and y0 < y1,
                     "has_knife": len(self.people_movement_heatmap.knifes) > 0,
                 }
