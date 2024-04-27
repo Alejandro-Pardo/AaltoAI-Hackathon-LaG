@@ -9,6 +9,7 @@ class FileCamera():
         if predefined_size is not None:
             self.predefined_size = predefined_size
         self.current_second = 0
+        self.frame_number = 0
 
 
     def get_shape(self):
@@ -21,6 +22,17 @@ class FileCamera():
         self.current_second += 1/3
         self.cap.set(cv2.CAP_PROP_POS_FRAMES, frame_number)
         ret, frame = self.cap.read()
+        if ret:
+            if hasattr(self, 'predefined_size'):
+                frame = cv2.resize(frame, self.predefined_size)
+            return frame
+        return None
+    
+    def get_image_one_by_one(self):
+        frame_number = self.frame_number
+        self.cap.set(cv2.CAP_PROP_POS_FRAMES, frame_number)
+        ret, frame = self.cap.read()
+        self.frame_number += 1
         if ret:
             if hasattr(self, 'predefined_size'):
                 frame = cv2.resize(frame, self.predefined_size)
