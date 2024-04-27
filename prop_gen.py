@@ -19,7 +19,7 @@ class PropGen():
         x1, y1 = 0,0
         for x in range(reduced_heatmap.shape[0]):
             for y in range(reduced_heatmap.shape[1]):
-                if reduced_heatmap[x, y] - mean_heat > 0.5 * std_heat:
+                if reduced_heatmap[x, y] - mean_heat > 3 * std_heat:
                     x0 = min(x0, x)
                     y0 = min(y0, y)
                     x1 = max(x1, x)
