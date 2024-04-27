@@ -10,7 +10,6 @@ class PropGen():
         mean_heat = np.mean(heat)
         std_heat = np.std(heat)
         max_heat = np.max(heat)
-        min_heat = np.min(heat)
         num_people = num_people
         total_heat = np.sum(heat)
         heat_per_person = total_heat / num_people
@@ -19,7 +18,7 @@ class PropGen():
         x1, y1 = 0,0
         for x in range(reduced_heatmap.shape[0]):
             for y in range(reduced_heatmap.shape[1]):
-                if reduced_heatmap[x, y] - mean_heat > 4 * std_heat:
+                if reduced_heatmap[x, y] / mean_heat > 2 and reduced_heatmap[x, y] > 100:
                     x0 = min(x0, x)
                     y0 = min(y0, y)
                     x1 = max(x1, x)
