@@ -34,7 +34,10 @@ class HeatMapDataset(Dataset):
             idx = [idx]
         for id in idx:
             sample = torch.tensor(np.load(f'{self.root_dir}/hack/data_{id}.npy'),dtype=torch.float32)
-            sample[:,:,0] = sample[:,:,0] / 255
+            sample = sample.reshape(2,sample.shape[0],sample.shape[1])
+           
+            sample[0,:,:] = sample[0,:,:] / 255
+            
         if self.transform:
             sample = self.transform(sample)
 
