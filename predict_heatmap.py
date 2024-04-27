@@ -7,12 +7,13 @@ from Camera_DataLoader import HeatMapDataset
 from torch.utils.data import DataLoader, random_split
 
 
+device ="cuda"
 
-
-de
 encoder = Encoder()
 decoder = Decoder(encoder.out_shape)
 
+encoder = encoder.to(device)
+decoder = decoder.to(device)
 epochs = 30
 dataset = HeatMapDataset()
 
@@ -24,13 +25,13 @@ train_size = len(dataset) - test_size
 train_dataset, test_dataset = random_split(dataset, [train_size, test_size])
 
 # Create data loaders
-batch_size = 64
+batch_size = 10
 train_loader = DataLoader(train_dataset, batch_size=batch_size, shuffle=True)
 test_loader = DataLoader(test_dataset, batch_size=batch_size, shuffle=False)
 optimizer = torch.optim.Adam(list(encoder.parameters()) + list(decoder.parameters()), lr=0.0001)
 for epoch in epochs:
     for i, data in enumerate(train_loader):
-        inputs = data
+        inputs = data.to(device)
         outputs = decoder(encoder(inputs))
         loss = torch.nn.functional.mse_loss(outputs, inputs)
         loss.backward()
