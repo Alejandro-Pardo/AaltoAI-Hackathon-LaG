@@ -21,7 +21,13 @@ class Server:
         self.prop_gen = PropGen(shape)
         self.fps = 1
         self.writer = video_writer = cv2.VideoWriter(
-            "heatmap_output.avi",
+            "box_output.avi",
+            cv2.VideoWriter_fourcc(*"MJPG"),
+            3,
+            (shape[1], shape[0]),
+        )
+        self.heat_writer = video_writer = cv2.VideoWriter(
+            "heat_output.avi",
             cv2.VideoWriter_fourcc(*"MJPG"),
             3,
             (shape[1], shape[0]),
@@ -37,16 +43,18 @@ class Server:
             num_people = len(self.people_movement_heatmap.people)
             mask = self.maskformer.gen_heat(image)
             heatmap_image = np.copy(image).astype(np.float64)
+            box_image = np.copy(image).astype(np.float64)
             heatmap = heatmap // 2
             heatmap += mask // 2
-            # heatmap_image[:,:] *= 0.1
-            # heatmap_image[:,:,2] = np.clip(heatmap, 0, 255).astype(np.uint8)
+            heatmap_image[:,:] *= 0.2
+            heatmap_image[:,:,2] = np.clip(heatmap, 0, 255).astype(np.uint8)
+            self.heat_writer.write(heatmap_image.astype(np.uint8))
             props = self.prop_gen.gen_properties(heatmap, num_people)
             mean_heat, max_heat, total_heat, heat_per_person, x0, y0, x1, y1 = props
             if x0 < x1 and y0 < y1:
                 print("Drawing Rectangle")
                 cv2.rectangle(
-                    heatmap_image,
+                    box_image,
                     (y0 - 50, x0 - 50),
                     (y1 + 50, x1 + 50),
                     (0, 0, 255),
@@ -63,7 +71,7 @@ class Server:
                     "has_knife": len(self.people_movement_heatmap.knifes) > 0,
                 }
             )
-            self.display(heatmap_image.astype(np.uint8))
+            self.display(box_image.astype(np.uint8))
             current_time = time.time()
             time_past = current_time - last_frame
             time_to_sleep = 1 / self.fps - time_past
