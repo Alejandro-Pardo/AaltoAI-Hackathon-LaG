@@ -1,8 +1,10 @@
 from file_camera import FileCamera
 from MakFormer import MaskFormer
 import numpy as np
+import torch
+device = "cuda" if torch.cuda.is_available() else "cpu"
 cam = FileCamera("IMG_1081.mp4",predefined_size=(1280, 720))
-maskformer = MaskFormer(cam.get_shape())
+maskformer = MaskFormer(cam.get_shape(),device=device)
 current_frame = cam.get_image_one_by_one()
 counter = 0
 while current_frame is not None:
